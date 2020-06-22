@@ -23,7 +23,6 @@ namespace TodoApi.Controllers
         {
              _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _context = context;
-            Log.Information("TESTANDO");
         }
         #endregion
 
@@ -45,7 +44,7 @@ namespace TodoApi.Controllers
 
             if (todoItem == null)
             {
-                _logger.LogError("Objeto não encontrado");
+                _logger.LogError("Object not found");
                 return NotFound();
             }
 
