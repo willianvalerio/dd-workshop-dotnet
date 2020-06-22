@@ -3,6 +3,7 @@ version: '3.4'
 services:
   agent:
     image: "datadog/agent"
+    container_name: agent
     environment:
       - DD_API_KEY=${DD_API_KEY}
       - DD_APM_ENABLED=true
@@ -10,7 +11,7 @@ services:
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_TAGS="env:workshop"
-      - DD_LOG_LEVEL="WARN"
+      - DD_LOG_LEVEL=WARN
     ports:
       - "8126:8126"
       - "8125:8125"
@@ -21,6 +22,8 @@ services:
   todoapi:
     #image: willianvalerio/dotnet-todoapi
     build: ./
+    depends_on:
+      - agent
     container_name: todoapi
     ports:
       - 5001:80
