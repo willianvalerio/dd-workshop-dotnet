@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  agent:
+    image: "datadog/agent"
+    environment:
+      - DD_API_KEY=${DD_API_KEY}
+      - DD_APM_ENABLED=true
+      - DD_LOGS_ENABLED=true
+      - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
+      - DD_PROCESS_AGENT_ENABLED=true
+      - DD_TAGS="env:workshop"
+    ports:
+      - "8126:8126"
+      - "8125:8125"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /proc/:/host/proc/:ro
+      - /sys/fs/cgroup/:/host/sys/fs/cgroup:ro
+  todoapi:
+    image: willianvalerio/dotnet-todoapi
+    container_name: todoapi
+    ports:
+      - 5001:80
+    labels:
+      com.datadoghq.ad.logs: '[{"source": "csharp", "service": "todoapi"}]'
