@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 using Serilog;
 using Microsoft.Extensions.Logging;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace TodoApi.Controllers
 {
@@ -67,6 +69,8 @@ namespace TodoApi.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                string jsonString = JsonSerializer.Serialize(todoItem);
+                _logger.LogInformation("UPDATE {jsonString}",jsonString);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -89,10 +93,12 @@ namespace TodoApi.Controllers
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
         {
+ 
             _context.TodoItems.Add(todoItem);
             await _context.SaveChangesAsync();
-
-            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
+            string jsonString = JsonSerializer.Serialize(todoItem);
+            _logger.LogInformation("CREATE {jsonString}",jsonString);
+            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);            
             return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
         }
         #endregion
@@ -111,6 +117,8 @@ namespace TodoApi.Controllers
             _context.TodoItems.Remove(todoItem);
             await _context.SaveChangesAsync();
 
+            string jsonString = JsonSerializer.Serialize(todoItem);
+            _logger.LogInformation("DELETE {jsonString}",jsonString);
             return todoItem;
         }
         #endregion
