@@ -33,7 +33,6 @@ namespace TodoApi.Controllers
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
             
-            _logger.LogInformation("Returning all objects");
             return await _context.TodoItems.ToListAsync();
         }
 
@@ -69,8 +68,7 @@ namespace TodoApi.Controllers
             try
             {
                 await _context.SaveChangesAsync();
-                string jsonString = JsonSerializer.Serialize(todoItem);
-                _logger.LogInformation("UPDATE {jsonString}",jsonString);
+                _logger.LogInformation("Item: {item}",JsonSerializer.Serialize(todoItem));
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -96,8 +94,7 @@ namespace TodoApi.Controllers
  
             _context.TodoItems.Add(todoItem);
             await _context.SaveChangesAsync();
-            string jsonString = JsonSerializer.Serialize(todoItem);
-            _logger.LogInformation("CREATE {jsonString}",jsonString);
+            _logger.LogInformation("Item: {item}",JsonSerializer.Serialize(todoItem));
             //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);            
             return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
         }
@@ -116,9 +113,7 @@ namespace TodoApi.Controllers
 
             _context.TodoItems.Remove(todoItem);
             await _context.SaveChangesAsync();
-
-            string jsonString = JsonSerializer.Serialize(todoItem);
-            _logger.LogInformation("DELETE {jsonString}",jsonString);
+            _logger.LogInformation("Item: {item}",JsonSerializer.Serialize(todoItem));
             return todoItem;
         }
         #endregion
