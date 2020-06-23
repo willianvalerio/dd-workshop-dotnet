@@ -12,6 +12,7 @@ services:
       - DD_PROCESS_AGENT_ENABLED=true
       - DD_TAGS="env:workshop"
       - DD_LOG_LEVEL=WARN
+      #- DD_HOSTNAME=willianvalerio
     ports:
       - "8126:8126"
       - "8125:8125"
