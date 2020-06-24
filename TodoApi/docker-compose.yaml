@@ -10,9 +10,9 @@ services:
       - DD_LOGS_ENABLED=true
       - DD_LOGS_CONFIG_CONTAINER_COLLECT_ALL=true
       - DD_PROCESS_AGENT_ENABLED=true
-      - DD_TAGS="env:workshop"
+      - DD_TAGS=env:workshop team:${TEAM}
       - DD_LOG_LEVEL=WARN
-      #- DD_HOSTNAME=willianvalerio
+      - DD_HOSTNAME=${HOSTNAME}
     ports:
       - "8126:8126"
       - "8125:8125"
@@ -29,10 +29,10 @@ services:
     ports:
       - 5001:80
     labels:
-      com.datadoghq.ad.logs: '[{"source": "csharp", "service": "todoapi"}]'
+      com.datadoghq.ad.logs: '[{"source": "csharp", "service": "${SERVICE}"}]'
     environment:
       - DD_LOGS_INJECTION=true
       - DD_TRACE_ANALYTICS_ENABLED=true
       - DD_TRACE_AGENT_URL=http://agent:8126
-      - DD_SERVICE_NAME=todoapi
+      - DD_SERVICE_NAME=${SERVICE}
       - DD_TRACE_ENABLED=true
