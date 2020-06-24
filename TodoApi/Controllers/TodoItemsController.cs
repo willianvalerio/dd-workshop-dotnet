@@ -10,6 +10,7 @@ using Serilog;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Datadog.Trace;
 
 namespace TodoApi.Controllers
 {
@@ -90,12 +91,12 @@ namespace TodoApi.Controllers
         // POST: api/TodoItems
         [HttpPost]
         public async Task<ActionResult<TodoItem>> PostTodoItem(TodoItem todoItem)
-        {
- 
+        {           
             _context.TodoItems.Add(todoItem);
             await _context.SaveChangesAsync();
             _logger.LogInformation("Item: {item}",JsonSerializer.Serialize(todoItem));
-            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);            
+            //return CreatedAtAction("GetTodoItem", new { id = todoItem.Id }, todoItem);
+
             return CreatedAtAction(nameof(GetTodoItem), new { id = todoItem.Id }, todoItem);
         }
         #endregion
@@ -110,6 +111,11 @@ namespace TodoApi.Controllers
             {
                 return NotFound();
             }
+            
+            //datadog span tag
+            var scope = Tracer.Instance.ActiveScope;
+            scope.Span.SetTag("item.id", todoItem.Id.ToString());
+            scope.Span.SetTag("item.name", todoItem.Name);
 
             _context.TodoItems.Remove(todoItem);
             await _context.SaveChangesAsync();
