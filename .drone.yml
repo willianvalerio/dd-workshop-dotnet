@@ -11,3 +11,4 @@ pipeline:
     when:
       branch:
       - main
+      - master
