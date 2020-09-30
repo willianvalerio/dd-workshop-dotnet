@@ -1,14 +1,18 @@
-pipeline:
-  publish:
-    image: plugins/docker
-    settings:
-      repo: willianvalerio/dd-dotnet-todolist
-      auto_tag: true
-      username:
-        from_secret: DOCKER_USERNAME
-      password: 
-        from_secret: DOCKER_PASSWORD
-    when:
-      branch:
-      - main
-      - master
+kind: pipeline
+name: default
+
+
+steps:
+- name: publish docker  
+  image: plugins/docker
+  settings:
+    repo: willianvalerio/dd-dotnet-todolist
+    auto_tag: true
+    username:
+      from_secret: DOCKER_USERNAME
+    password: 
+      from_secret: DOCKER_PASSWORD
+  when:
+    branch:
+    - main
+    - master
