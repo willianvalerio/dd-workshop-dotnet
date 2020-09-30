@@ -15,7 +15,7 @@ RUN dotnet publish "TodoApi.csproj" -c Release -o /app/publish
 FROM base AS final
 COPY --from=publish /app/publish .
 WORKDIR /opt/datadog
-ARG DATADOG_TRACE=1.18.0
+ARG DATADOG_TRACE=1.19.4
 RUN curl -LO https://github.com/DataDog/dd-trace-dotnet/releases/download/v${DATADOG_TRACE}/datadog-dotnet-apm_${DATADOG_TRACE}_amd64.deb && \
     dpkg -i ./datadog-dotnet-apm_${DATADOG_TRACE}_amd64.deb && \
     rm -f /datadog-dotnet-apm_${DATADOG_TRACE}_amd64.deb
@@ -24,5 +24,6 @@ ENV CORECLR_PROFILER={846F5F1C-F9AE-4B07-969E-05C26BC060D8}
 ENV CORECLR_PROFILER_PATH=/opt/datadog/Datadog.Trace.ClrProfiler.Native.so
 ENV DD_INTEGRATIONS=/opt/datadog/integrations.json
 ENV DD_DOTNET_TRACER_HOME=/opt/datadog
+ENV DD_VERSION=1.0
 WORKDIR /app
 ENTRYPOINT ["dotnet", "TodoApi.dll"]
