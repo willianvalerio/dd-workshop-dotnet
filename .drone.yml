@@ -7,7 +7,6 @@ steps:
   image: plugins/docker
   settings:
     repo: willianvalerio/dd-dotnet-todolist
-    dockerfile: TodoApi/Dockerfile
     auto_tag: true
     username:
       from_secret: DOCKER_USERNAME
