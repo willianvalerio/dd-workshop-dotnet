@@ -34,6 +34,7 @@ namespace TodoApi.Controllers
         public async Task<ActionResult<IEnumerable<TodoItem>>> GetTodoItems()
         {
             
+            _logger.LogInformation("Get All Items");
             return await _context.TodoItems.ToListAsync();
         }
 
