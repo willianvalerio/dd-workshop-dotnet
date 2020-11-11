@@ -8,7 +8,7 @@ steps:
   settings:
     repo: willianvalerio/dd-dotnet-todolist
     tags:
-      - '2.0.4'
+      - '2.0.5'
     username:
       from_secret: DOCKER_USERNAME
     password: 
